@@ -40,6 +40,9 @@ def main_proc(p_host=HOST, p_user=USER, p_password=PASSWORD, p_db=DB, p_port=POR
         organizations_to_delete = list()
         drivers = list()
 
+        name = input("Input name: ")
+        last_name = input("Input last name: ")
+
         for organization in range(len(organizations)):
             sql = (
                 f"SELECT d.FIRST_NAME, d.LAST_NAME FROM {organizations[organization]['sd_db_source']}"
@@ -52,7 +55,9 @@ def main_proc(p_host=HOST, p_user=USER, p_password=PASSWORD, p_db=DB, p_port=POR
                 if not driver:
                     organizations_to_delete.append(organizations[organization]['org_name'])
                 else:
-                    drivers.append(str(organizations[organization]) + str(driver))
+                    for d in range(len(driver)):
+                        if driver[d]['FIRST_NAME'] == name and driver[d]['LAST_NAME'] == last_name:
+                            drivers.append(str(organizations[organization]) + str(driver[d]))
             except pymysql.err.ProgrammingError:
                 organizations_to_delete.append(organizations[organization]['org_name'])
 
